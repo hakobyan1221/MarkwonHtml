@@ -1,0 +1,83 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+ext {
+
+    config = [
+            'compile-sdk'    : 31,
+            'target-sdk'     : 31,
+            'min-sdk'        : 21,
+            'push-aar-gradle': 'https://raw.githubusercontent.com/noties/gradle-mvn-push/master/gradle-mvn-push-aar.gradle'
+    ]
+
+    final def commonMarkVersion = '0.13.0'
+
+    deps = [
+            'x-annotations'           : 'androidx.annotation:annotation:1.1.0',
+            'ix-java'                 : 'com.github.akarnokd:ixjava:1.0.0',
+            'commonmark'              : "com.atlassian.commonmark:commonmark:$commonMarkVersion",
+            'x-core'                  : 'androidx.core:core:1.0.2',
+            'x-appcompat'             : 'androidx.appcompat:appcompat:1.1.0',
+            'commonmark-strikethrough': "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:$commonMarkVersion",
+            'commons-io'              : 'commons-io:commons-io:2.6'
+    ]
+
+    deps['test'] = [
+            'junit'               : 'junit:junit:4.12',
+            'robolectric'         : 'org.robolectric:robolectric:3.8',
+            'mockito'             : 'org.mockito:mockito-core:2.21.0',
+            'commonmark-test-util': "com.atlassian.commonmark:commonmark-test-util:$commonMarkVersion",
+    ]
+
+    registerArtifact = this.&registerArtifact
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
+def registerArtifact(project) {
+
+    if (hasProperty('release')) {
+
+        // to be used in github actions (to publish a snapshot)
+        // but only if we have snapshot in the version name
+        if (hasProperty('CI') && VERSION_NAME.contains('SNAPSHOT')) {
+            ext.NEXUS_USERNAME = System.getenv('NEXUS_USERNAME')
+            ext.NEXUS_PASSWORD = System.getenv('NEXUS_PASSWORD')
+        }
+
+        project.apply from: config['push-aar-gradle']
+    }
+
+    project.afterEvaluate {
+
+        // disable generation of BuildConfig files
+        project.generateDebugBuildConfig.enabled = false
+        project.generateReleaseBuildConfig.enabled = false
+
+        // print test status (for CI)
+        project.android.testOptions.unitTests.all {
+            testLogging {
+                events "passed", "skipped", "failed"
+                exceptionFormat "short"
+                showStandardStreams = true
+            }
+        }
+    }
+}
+
+
