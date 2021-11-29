@@ -1,0 +1,4 @@
+R_DEF: Internal format may change without notice
+local
+id markwon_drawables_scheduler
+id markwon_drawables_scheduler_last_text_hashcode
