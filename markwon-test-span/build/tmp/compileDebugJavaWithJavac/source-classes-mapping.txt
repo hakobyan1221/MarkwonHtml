@@ -1,0 +1,20 @@
+io/noties/markwon/test/TestSpanText.java
+ io.noties.markwon.test.TestSpanText
+io/noties/markwon/test/BuildConfig.java
+ io.noties.markwon.test.BuildConfig
+io/noties/markwon/test/TestSpanMatcher.java
+ io.noties.markwon.test.TestSpanMatcher
+ io.noties.markwon.test.TestSpanMatcher$1
+ io.noties.markwon.test.TestSpanMatcher$2
+io/noties/markwon/test/TestSpan.java
+ io.noties.markwon.test.TestSpan
+ io.noties.markwon.test.TestSpan$Document
+ io.noties.markwon.test.TestSpan$Span
+ io.noties.markwon.test.TestSpan$Text
+io/noties/markwon/test/TestSpanEnumerator.java
+ io.noties.markwon.test.TestSpanEnumerator
+ io.noties.markwon.test.TestSpanEnumerator$Listener
+io/noties/markwon/test/TestSpanSpan.java
+ io.noties.markwon.test.TestSpanSpan
+io/noties/markwon/test/TestSpanDocument.java
+ io.noties.markwon.test.TestSpanDocument
